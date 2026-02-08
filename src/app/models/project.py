@@ -36,7 +36,7 @@ class Project(BaseModel):
         nullable=True,
     )
     created_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="PROTECT"),
+        ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
     )
     is_archived: Mapped[bool] = mapped_column(

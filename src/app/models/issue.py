@@ -62,7 +62,7 @@ class Issue(BaseModel):
         index=True,
     )
     reporter_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="PROTECT"),
+        ForeignKey("users.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
     )

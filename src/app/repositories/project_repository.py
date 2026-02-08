@@ -34,6 +34,25 @@ class ProjectRepository(BaseRepository[Project]):
         )
         return result.scalar_one_or_none()
 
+    async def get_with_stats(self, id: UUID) -> Optional[Project]:
+        """Get project with creator and issues loaded for stats.
+
+        Args:
+            id: Project UUID
+
+        Returns:
+            Project instance with creator and issues loaded or None
+        """
+        result = await self.session.execute(
+            select(Project)
+            .options(
+                selectinload(Project.creator),
+                selectinload(Project.issues),
+            )
+            .where(Project.id == id)
+        )
+        return result.scalar_one_or_none()
+
     async def get_by_name(self, name: str) -> Optional[Project]:
         """Get project by name.
 

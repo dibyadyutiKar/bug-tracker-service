@@ -13,7 +13,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
     volumes:
       - ./src:/app/src:ro
-      - ./alembic:/app/alembic:ro
+      - ./alembic:/app/alembic
       - ./alembic.ini:/app/alembic.ini:ro
       - ./keys:/app/keys:ro
     ports:

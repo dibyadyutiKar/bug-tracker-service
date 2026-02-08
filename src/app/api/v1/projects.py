@@ -109,14 +109,20 @@ async def get_project(
     """Get project by ID."""
     try:
         project_service = ProjectService(db)
-        project = await project_service.get_project(project_id)
+        project = await project_service.get_project_with_stats(project_id)
 
-        # Build response with stats
-        response = ProjectWithStats.model_validate(project)
-        response.issue_count = project.issue_count
-        response.open_issue_count = project.open_issue_count
-
-        return response
+        return ProjectWithStats(
+            id=project.id,
+            name=project.name,
+            description=project.description,
+            created_by_id=project.created_by_id,
+            is_archived=project.is_archived,
+            created_at=project.created_at,
+            updated_at=project.updated_at,
+            creator=project.creator,
+            issue_count=project.issue_count,
+            open_issue_count=project.open_issue_count,
+        )
     except NotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

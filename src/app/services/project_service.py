@@ -46,6 +46,23 @@ class ProjectService:
             raise NotFoundError("Project", project_id)
         return project
 
+    async def get_project_with_stats(self, project_id: UUID) -> Project:
+        """Get project by ID with creator and issues loaded for stats.
+
+        Args:
+            project_id: Project UUID
+
+        Returns:
+            Project instance with issues loaded
+
+        Raises:
+            NotFoundError: If project not found
+        """
+        project = await self.project_repo.get_with_stats(project_id)
+        if not project:
+            raise NotFoundError("Project", project_id)
+        return project
+
     async def list_projects(
         self,
         params: ProjectListParams,

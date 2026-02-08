@@ -58,8 +58,10 @@ class IssueRepository(BaseRepository[Issue]):
         query = (
             select(Issue)
             .options(
+                selectinload(Issue.project),
                 selectinload(Issue.reporter),
                 selectinload(Issue.assignee),
+                selectinload(Issue.comments),
             )
             .where(Issue.project_id == project_id)
         )
