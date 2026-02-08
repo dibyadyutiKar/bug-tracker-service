@@ -113,20 +113,27 @@ A production-ready backend API for internal bug tracking, built with FastAPI, Po
    - Swagger UI: http://localhost:8000/docs
    - ReDoc: http://localhost:8000/redoc
 
-### Docker Development
+### Docker Development (Recommended)
 
 ```bash
-# Start all services (API, PostgreSQL, Redis)
+# 1. Generate JWT keys
+mkdir -p keys
+openssl genrsa -out keys/private_key.pem 2048
+openssl rsa -in keys/private_key.pem -pubout -out keys/public_key.pem
+
+# 2. Start all services
 docker-compose up -d
 
-# View logs
-docker-compose logs -f api
-
-# Run migrations
+# 3. Run migrations
 docker-compose exec api alembic upgrade head
 
-# Seed data
+# 4. Seed sample data (optional)
 docker-compose exec api python scripts/seed_data.py
+
+# 5. Verify it's working
+curl http://localhost:8000/health
+
+# Access Swagger UI: http://localhost:8000/docs
 ```
 
 ## API Documentation
