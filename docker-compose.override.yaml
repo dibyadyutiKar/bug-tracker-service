@@ -1,0 +1,35 @@
+# Development overrides for docker-compose
+# This file is automatically loaded by docker-compose
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: task-tracker-api-dev
+    environment:
+      - APP_ENV=development
+      - DEBUG=true
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/task_tracker
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./src:/app/src:ro
+      - ./alembic:/app/alembic:ro
+      - ./alembic.ini:/app/alembic.ini:ro
+      - ./keys:/app/keys:ro
+    ports:
+      - "8000:8000"
+      - "5678:5678"  # Debug port for debugpy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  # Disable nginx in development
+  nginx:
+    profiles:
+      - production

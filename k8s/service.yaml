@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-tracker-api
+  namespace: task-tracker
+  labels:
+    app: task-tracker
+    component: api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app: task-tracker
+    component: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: task-tracker
+  labels:
+    app: task-tracker
+    component: database
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+      name: postgres
+  selector:
+    app: task-tracker
+    component: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: task-tracker
+  labels:
+    app: task-tracker
+    component: cache
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
+      name: redis
+  selector:
+    app: task-tracker
+    component: redis
